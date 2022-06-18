@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from . import crud, schemas
 import models
-from database import SessionLocal, engine
+from database import SessionLocal, engine, get_db
 
 router = APIRouter(
     prefix="/api/v1",
@@ -12,19 +12,9 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
-models.Base.metadata.create_all(bind=engine)
-
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
 @router.post("/items/", response_model=schemas.Item)
 def create_item_for_user(
-    user_id: int, item: schemas.ItemCreate, db: Session = Depends(get_db)
+    item: schemas.Item, db: Session = Depends(get_db)
 ):
     return crud.create_user_item(db=db, item=item)
 
