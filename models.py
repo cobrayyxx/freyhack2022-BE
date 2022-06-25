@@ -1,5 +1,5 @@
 from psycopg2 import Timestamp
-from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String
+from sqlalchemy import BigInteger, Boolean, Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 from database import Base
 
@@ -23,7 +23,7 @@ class Event(Base):
     description = Column(String)
     contact = Column(String)
     num_participants = Column(Integer)
-    # date_time = Column(Timestamp)
+    date_time = Column(DateTime)
 
 class Request(Base):
     __tablename__ = "request"
