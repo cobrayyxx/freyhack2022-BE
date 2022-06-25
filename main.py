@@ -4,6 +4,7 @@ from auth import auth_controller
 from event import event_controller
 import models
 from database import SessionLocal, engine
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
