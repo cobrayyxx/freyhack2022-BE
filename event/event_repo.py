@@ -12,7 +12,6 @@ def create_event(db:Session, event:event_schemas.Event):
     return db_event_item
 
 def get_events(db: Session= Depends(get_db), skip: int = 0, limit: int = 100):
-    print("MASUEK")
     return db.query(models.Event).offset(skip).limit(limit).all()
 
 def get_events_by_id(db: Session, event_id: int):

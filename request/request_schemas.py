@@ -1,5 +1,7 @@
+from typing import Optional
 from pydantic import BaseModel, Field
 from datetime import datetime
+from typing import Optional
 
 class Request(BaseModel):
     id: int = Field(None)
@@ -9,4 +11,7 @@ class Request(BaseModel):
     accept : bool = Field(default=None)
     class Config:
         orm_mode = True
+    
+class RequestUpdate(BaseModel):
+    accept: Optional[bool]
     
