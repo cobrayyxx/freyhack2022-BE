@@ -1,6 +1,7 @@
 from typing import Union
 
 from pydantic import BaseModel, Field
+from datetime import datetime
 
 class Event(BaseModel):
     id: int = Field(None)
@@ -12,5 +13,6 @@ class Event(BaseModel):
     description: str = Field(..., max_length=500)
     contact: str=Field(...)
     num_participants: int=Field(default=0)
+    # datetime: datetime
     class Config:
         orm_mode = True
