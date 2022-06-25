@@ -13,6 +13,6 @@ class Event(BaseModel):
     description: str = Field(..., max_length=500)
     contact: str=Field(...)
     num_participants: int=Field(default=0)
-    # datetime: datetime
+    datetime: int=Field(...)
     class Config:
         orm_mode = True
