@@ -19,13 +19,42 @@ router = APIRouter(
 )
 
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/v1/login")
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 SECRET_KEY = token_settings.SECRET_KEY
 ALGORITHM = token_settings.ALGORITHM
 ACCESS_TOKEN_EXPIRE_MINUTES = token_settings.ACCESS_TOKEN_EXPIRE_MINUTES
+###############################################################################
+def get_current_user(token: str = Depends(oauth2_scheme), db: Session= Depends(get_db)):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        print(payload)
+        username: str = payload.get("sub")
+        if username is None:
+            raise credentials_exception
+        token_data = auth_schemas.TokenData(username=username)
+        print(token_data)
+    except JWTError:
+        raise credentials_exception
+    user = auth_repo.get_certain_user( db=db,username=token_data.username)
+    print(user)
+    if user is None:
+        raise credentials_exception
+    return user
 
+def get_current_active_user(current_user: auth_schemas.User = Depends(get_current_user)):
+    # print("##############")
+    # print(current_user)
+    # if current_user.disabled:
+    #     raise HTTPException(status_code=400, detail="Inactive user")
+    return current_user
+#####################################################################################
 def get_password_hash(password):
     return pwd_context.hash(password)
 
