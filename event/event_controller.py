@@ -33,5 +33,4 @@ def get_certain_event(event_id: int, db: Session = Depends(get_db),current_user:
 @router.get("/search/", response_model=list[event_schemas.Event])
 def search_event(db: Session = Depends(get_db), query: Optional[str] = None):
     events = event_repo.search_event_db(db, query)
-    print(events)
     return events
