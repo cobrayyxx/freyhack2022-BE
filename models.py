@@ -1,5 +1,5 @@
 from psycopg2 import Timestamp
-from sqlalchemy import BigInteger, Boolean, Column, DateTime, ForeignKey, Integer, String
+from sqlalchemy import BigInteger, Boolean, Column, DateTime, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 from database import Base
 
@@ -17,8 +17,8 @@ class Event(Base):
     id = Column(Integer, primary_key=True, index=True)
     creator = Column(String, ForeignKey("users.username"))
     name = Column(String)
-    latitude = Column(Integer)
-    longitude = Column(Integer)
+    latitude = Column(Float)
+    longitude = Column(Float)
     location = Column(String)
     description = Column(String)
     contact = Column(String)
