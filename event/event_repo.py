@@ -19,6 +19,8 @@ def get_events_by_id(db: Session, event_id: int):
     return db.query(models.Event).filter(models.Event.id == int(event_id)).first()
 
 def search_event_db(db: Session, query: str):
+    if query is None:
+        return get_events(db)
     name_event = str(models.Event.name)
     name_event.lower()
     events = db.query(models.Event).filter(func.lower(models.Event.name).contains(query.lower())).all()
