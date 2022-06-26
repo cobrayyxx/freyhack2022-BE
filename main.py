@@ -9,12 +9,6 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-models.Base.metadata.create_all(bind=engine)
-
-app.include_router(auth_controller.router)
-app.include_router(event_controller.router)
-app.include_router(request_controller.router)
-
 origins = [
    "*"
 ]
@@ -26,3 +20,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+models.Base.metadata.create_all(bind=engine)
+
+app.include_router(auth_controller.router)
+app.include_router(event_controller.router)
+app.include_router(request_controller.router)
+
