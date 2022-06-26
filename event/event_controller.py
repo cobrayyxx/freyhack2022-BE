@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from database import get_db
 from auth.auth_schemas import User
 from auth.auth_controller import get_current_active_user
+from typing import Optional
 
 router = APIRouter(
     prefix="/api/v1",
@@ -27,5 +28,10 @@ def get_all_events(skip: int = 0, limit: int = 100, db: Session = Depends(get_db
 @router.get("/events/{event_id}", response_model=event_schemas.Event)
 def get_certain_event(event_id: int, db: Session = Depends(get_db),current_user: User = Depends(get_current_active_user)):
     event = event_repo.get_events_by_id(db, event_id)
-    print(event)
     return event
+
+@router.get("/search/", response_model=list[event_schemas.Event])
+def search_event(db: Session = Depends(get_db), query: Optional[str] = None):
+    events = event_repo.search_event_db(db, query)
+    print(events)
+    return events

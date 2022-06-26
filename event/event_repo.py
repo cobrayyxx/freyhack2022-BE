@@ -16,3 +16,7 @@ def get_events(db: Session= Depends(get_db), skip: int = 0, limit: int = 100):
 
 def get_events_by_id(db: Session, event_id: int):
     return db.query(models.Event).filter(models.Event.id == int(event_id)).first()
+
+def search_event_db(db: Session, query: str):
+    events = db.query(models.Event).filter(models.Event.name.contains(query)).all()
+    return events
