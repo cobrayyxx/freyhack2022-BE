@@ -46,10 +46,12 @@ def accept_request(db:Session, request_id:int, request:request_schemas.RequestUp
 def reject_request(db:Session, request_id:int):
     db_req = get_certain_request_by_id(db, request_id)
 
+    print()
     if db_req is None:
         raise HTTPException(status_code=404, detail="Request not found")
     
     db.delete(db_req)
+    db.commit()
     return True
 
     
