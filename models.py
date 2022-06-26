@@ -13,7 +13,7 @@ class User(Base):
 
 class Event(Base):
     __tablename__ = "event"
-
+    
     id = Column(Integer, primary_key=True, index=True)
     creator = Column(String, ForeignKey("users.username"))
     name = Column(String)
@@ -24,15 +24,19 @@ class Event(Base):
     contact = Column(String)
     num_participants = Column(Integer)
     date_time = Column(DateTime)
+    requests = relationship("Request", backref="event")
+    enrolled = relationship("Enrolled", backref="event")
+
 
 class Request(Base):
     __tablename__ = "request"
-
     id = Column(Integer, primary_key=True, index=True)
     event_id = Column(Integer, ForeignKey("event.id"))
     requester_id = Column(String, ForeignKey("users.username"))
     request_message = Column(String)
     accept = Column(Boolean)
+
+
 
 class Enrolled(Base):
     __tablename__ ="enrolled"
