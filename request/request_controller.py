@@ -11,9 +11,10 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
-@router.post("/request")
+@router.post("/request", response_model=request_schemas.Request)
 def create_request_controller(request:request_schemas.Request, 
     current_user: User = Depends(get_current_active_user), db: Session=Depends(get_db)):
+    request.requester_id = current_user.username
     return request_repo.create_request(db, request)
 
 @router.put("/request/acc/{request_id}")

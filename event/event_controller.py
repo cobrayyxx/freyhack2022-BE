@@ -14,7 +14,7 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
-@router.post("/event")
+@router.post("/event", response_model=event_schemas.Event)
 def create_event( event: event_schemas.Event, current_user: User = Depends(get_current_active_user), db: Session=Depends(get_db)):
     event.creator = current_user.username
     return event_repo.create_event(db=db, event=event)
@@ -24,7 +24,8 @@ def get_all_events(skip: int = 0, limit: int = 100, db: Session = Depends(get_db
     events = event_repo.get_events(db, skip=skip, limit=limit)
     return events
 
-@router.get("/events/{event_id}")
+@router.get("/events/{event_id}", response_model=event_schemas.Event)
 def get_certain_event(event_id: int, db: Session = Depends(get_db),current_user: User = Depends(get_current_active_user)):
     event = event_repo.get_events_by_id(db, event_id)
+    print(event)
     return event
